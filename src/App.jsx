@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import useDebounce from './hooks/useDebounce';
 
 const DATA = [
   'React',
@@ -15,18 +16,7 @@ const DATA = [
 
 const App = () => {
   const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setDebouncedQuery(query);
-    }, 500);
-
-    // cleanup: se ejecuta antes del siguiente effect
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [query]);
+  const debouncedQuery = useDebounce(query, 500);
 
   const filtered = DATA.filter(item =>
     item.toLowerCase().includes(debouncedQuery.toLowerCase())
